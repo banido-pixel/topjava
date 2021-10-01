@@ -8,6 +8,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
+import java.util.concurrent.Phaser;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class UserMealsUtil {
@@ -22,20 +28,31 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
         );
 
-        List<UserMealWithExcess> mealsTo = filteredByCycles(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
-        mealsTo.forEach(System.out::println);
+//        List<UserMealWithExcess> mealsTo1 = filteredByCycles(meals, LocalTime.of(0, 0), LocalTime.of(23, 0), 2000);
+//        mealsTo1.forEach(System.out::println);
+//        System.out.println();
+//
+//        List<UserMealWithExcess> mealsTo2 = filteredByStreams(meals, LocalTime.of(0, 0), LocalTime.of(23, 0), 2000);
+//        mealsTo2.forEach(System.out::println);
+//        System.out.println();
+
+        List<UserMealWithExcess> mealsTo3 = filteredBySingleCycle(meals, LocalTime.of(0, 0), LocalTime.of(23, 1), 2000);
+        mealsTo3.forEach(System.out::println);
         System.out.println();
 
-        System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
+//        List<UserMealWithExcess> mealsTo4 = filteredBySingleStream(meals, LocalTime.of(0, 0), LocalTime.of(22, 0), 2000);
+//        mealsTo4.forEach(System.out::println);
+//        System.out.println();
+
     }
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        List<UserMealWithExcess> result = new ArrayList<>();
         Map<LocalDate, Integer> checkExcessMap = new HashMap<>();
         for (UserMeal meal :
                 meals) {
             checkExcessMap.merge(meal.getDateTime().toLocalDate(), meal.getCalories(), Integer::sum);
         }
+        List<UserMealWithExcess> result = new ArrayList<>();
         for (UserMeal meal :
                 meals) {
             if (TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime)) {
@@ -54,5 +71,82 @@ public class UserMealsUtil {
                 .map(s -> new UserMealWithExcess(s.getDateTime(), s.getDescription(), s.getCalories(),
                         checkExcessMap.get(s.getDateTime().toLocalDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
+    }
+
+    public static List<UserMealWithExcess> filteredBySingleCycle(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+        Phaser phaser = new Phaser();
+        Map<LocalDate, Integer> checkExcessMap = new HashMap<>();
+        List<UserMealWithExcess> result = Collections.synchronizedList(new ArrayList<>());
+        for (UserMeal meal :
+                meals) {
+            checkExcessMap.merge(meal.getDateTime().toLocalDate(), meal.getCalories(), Integer::sum);
+
+            new Thread(() -> {
+                phaser.register();
+                phaser.awaitAdvance(phaser.arriveAndDeregister());
+                if (TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime)) {
+                    boolean isExcess = checkExcessMap.get(meal.getDateTime().toLocalDate()) > caloriesPerDay;
+                    result.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), isExcess));
+                }
+            }).start();
+        }
+        return result;
+    }
+
+    public static List<UserMealWithExcess> filteredBySingleStream(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+
+        Collector<UserMeal, HashMap<LocalDate, List<Object>>, List<UserMealWithExcess>> mealsCollector = new Collector<UserMeal, HashMap<LocalDate, List<Object>>, List<UserMealWithExcess>>() {
+            @Override
+            public Supplier<HashMap<LocalDate, List<Object>>> supplier() {
+                return HashMap::new;
+            }
+
+            @Override
+            public BiConsumer<HashMap<LocalDate, List<Object>>, UserMeal> accumulator() {
+                return (map, meal) -> {
+                    map.merge(meal.getDateTime().toLocalDate(), getDefaultList(meal), (o, n) -> {
+                        o.set(0, (Integer) o.get(0) + (Integer) n.get(0));
+                        return o;
+                    });
+                    ((List<UserMeal>) map.get(meal.getDateTime().toLocalDate()).get(1)).add(meal);
+                };
+            }
+
+            @Override
+            public BinaryOperator<HashMap<LocalDate, List<Object>>> combiner() {
+                return (l, r) -> {
+                    r.forEach((k, v) -> l.merge(k, v, (o, n) -> {
+                        o.set(0, (Integer) o.get(0) + (Integer) n.get(0));
+                        o.set(1, ((List<UserMeal>) o.get(1)).addAll((List<UserMeal>) n.get(1)));
+                        return o;
+                    }));
+                    return l;
+                };
+            }
+
+            @Override
+            public Function<HashMap<LocalDate, List<Object>>, List<UserMealWithExcess>> finisher() {
+                return m -> m.values().stream()
+                        .flatMap(l -> ((List<UserMeal>) l.get(1)).stream()
+                                .filter(um -> TimeUtil.isBetweenHalfOpen(um.getDateTime().toLocalTime(), startTime, endTime))
+                                .map(um -> new UserMealWithExcess(um.getDateTime(), um.getDescription(), um.getCalories(),
+                                        ((Integer) l.get(0)) > caloriesPerDay)))
+                        .collect(Collectors.toList());
+            }
+
+            @Override
+            public Set<Characteristics> characteristics() {
+                return EnumSet.of(Characteristics.CONCURRENT);
+            }
+
+            private List<Object> getDefaultList(UserMeal meal){
+                List<Object> result = new ArrayList<>();
+                result.add(meal.getCalories());
+                result.add(new ArrayList<UserMeal>());
+                return result;
+            }
+        };
+
+        return meals.stream().collect(mealsCollector);
     }
 }
