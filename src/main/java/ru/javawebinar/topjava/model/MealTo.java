@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava.model;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class MealTo {
     private final LocalDateTime dateTime;
@@ -29,9 +28,8 @@ public class MealTo {
                 '}';
     }
 
-    public String getDateTime() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
-        return dtf.format(dateTime);
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
     public String getDescription() {

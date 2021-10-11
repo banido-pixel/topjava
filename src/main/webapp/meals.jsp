@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="ru">
 <head>
     <title>Meals</title>
@@ -21,9 +22,11 @@
     <jsp:useBean id="meals" scope="request" type="java.util.List"/>
     <c:forEach items="${meals}" var="meal">
         <tr style="color: ${meal.excess ? 'red' : 'green'}">
-            <td><c:out value="${meal.dateTime}"/></td>
-            <td><c:out value="${meal.description}"/></td>
-            <td><c:out value="${meal.calories}"/></td>
+            <td><fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime"
+                               type="both"/>
+                <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/></td>
+            <td>${meal.description}</td>
+            <td>${meal.calories}</td>
         </tr>
     </c:forEach>
     </tbody>
