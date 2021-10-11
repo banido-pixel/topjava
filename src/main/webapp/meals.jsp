@@ -16,17 +16,21 @@
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
+        <th colspan="2"></th>
     </tr>
     </thead>
     <tbody>
     <jsp:useBean id="meals" scope="request" type="java.util.List"/>
+    <p><a href="meals?action=addMeal">Add new meal</a></p>
     <c:forEach items="${meals}" var="meal">
         <tr style="color: ${meal.excess ? 'red' : 'green'}">
             <td><fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime"
                                type="both"/>
-                <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/></td>
+                <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${parsedDateTime}"/></td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
+            <td><a href="meals?action=update&mealId=${meal.id}">Update</a></td>
+            <td><a href="meals?action=delete&mealId=${meal.id}">Delete</a></td>
         </tr>
     </c:forEach>
     </tbody>
