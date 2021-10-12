@@ -69,7 +69,7 @@ public class MealServlet extends HttpServlet {
     }
 
     private void forwardToMeals(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<MealTo> mealsTo = MealsUtil.filteredByStreams(new ArrayList<>(mealDao.getAll().values()), LocalTime.MIN, LocalTime.MAX,
+        List<MealTo> mealsTo = MealsUtil.filteredByStreams(mealDao.getAll(), LocalTime.MIN, LocalTime.MAX,
                 mealDao.CALORIES_PER_DAY);
         request.setAttribute("meals", mealsTo);
         log.debug("forward to meals");

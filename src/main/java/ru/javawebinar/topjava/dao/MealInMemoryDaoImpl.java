@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-public class MealInMemoryDaoImpl implements MealInMemoryDao {
+public class MealInMemoryDaoImpl implements MealDao {
     public final AtomicLong counter = new AtomicLong(0);
     public final int CALORIES_PER_DAY = 2000;
     private Map<Long, Meal> storage;
@@ -26,27 +26,29 @@ public class MealInMemoryDaoImpl implements MealInMemoryDao {
        storage = meals.stream().collect(Collectors.toConcurrentMap(Meal::getId,meal -> meal));
     }
 
-    public Map<Long, Meal> getAll() {
-        return storage;
+    public List<Meal> getAll() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override
-    public Meal getById(Long id) {
+    public Meal getById(long id) {
         return storage.getOrDefault(id,new Meal());
     }
 
     @Override
-    public void add(Meal meal) {
+    public Meal add(Meal meal) {
         storage.put(meal.getId(), meal);
+        return meal;
     }
 
     @Override
-    public void update(Meal meal) {
+    public Meal update(Meal meal) {
         storage.put(meal.getId(), meal);
+        return meal;
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(long id) {
         storage.remove(id);
     }
 }
