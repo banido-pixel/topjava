@@ -1,9 +1,10 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.dao.MealInMemoryDaoImpl;
+import ru.javawebinar.topjava.dao.InMemoryMealDao;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletException;
@@ -14,7 +15,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -24,10 +24,10 @@ public class MealServlet extends HttpServlet {
     private static final String ADD_OR_UPDATE = "/meal.jsp";
     private static final String MEALS_LIST = "/meals.jsp";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-    private final MealInMemoryDaoImpl mealDao;
+    private final InMemoryMealDao mealDao;
 
     public MealServlet() {
-        mealDao = new MealInMemoryDaoImpl();
+        mealDao = new InMemoryMealDao();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class MealServlet extends HttpServlet {
 
         if (mealId == null || mealId.isEmpty()) {
             log.debug("added meal");
-            mealDao.add(new Meal(mealDao.counter.incrementAndGet(), dateTime, description, calories));
+            mealDao.add(new Meal(dateTime, description, calories));
         } else {
             log.debug("updated meal");
             mealDao.update(new Meal(Long.parseLong(mealId), dateTime, description, calories));
@@ -70,7 +70,7 @@ public class MealServlet extends HttpServlet {
 
     private void forwardToMeals(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<MealTo> mealsTo = MealsUtil.filteredByStreams(mealDao.getAll(), LocalTime.MIN, LocalTime.MAX,
-                mealDao.CALORIES_PER_DAY);
+                User.CALORIES_PER_DAY);
         request.setAttribute("meals", mealsTo);
         log.debug("forward to meals");
         request.getRequestDispatcher(MEALS_LIST).forward(request, response);
