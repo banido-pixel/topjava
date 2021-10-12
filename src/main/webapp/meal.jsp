@@ -8,7 +8,7 @@
 <body>
 
 <jsp:useBean id="meal" scope="request" type="ru.javawebinar.topjava.model.Meal"/>
-<h2>${(meal.id > 0) ? 'Update meal' : 'Add new meal'} </h2>
+<h2>${(meal.id != null) ? 'Update meal' : 'Add new meal'} </h2>
 <form method="post" action="meals">
     <input type="hidden" name="mealId" value=${meal.id}>
     <p>DateTime : <input type="datetime-local" name="dateTime" value=${meal.dateTime}></p>
