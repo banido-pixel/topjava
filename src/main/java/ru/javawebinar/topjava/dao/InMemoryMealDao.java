@@ -35,7 +35,7 @@ public class InMemoryMealDao implements MealDao {
 
     @Override
     public Meal getById(long id) {
-        return storage.getOrDefault(id, null);
+        return storage.get(id);
     }
 
     @Override
@@ -43,14 +43,18 @@ public class InMemoryMealDao implements MealDao {
         if (meal.getId() == null) {
             meal.setId(counter.incrementAndGet());
             storage.put(meal.getId(), meal);
+            return meal;
         }
-        return meal;
+        return null;
     }
 
     @Override
     public Meal update(Meal meal) {
-        storage.put(meal.getId(), meal);
-        return meal;
+        if(this.getById(meal.getId()) != null){
+            storage.put(meal.getId(), meal);
+            return meal;
+        }
+        return null;
     }
 
     @Override
