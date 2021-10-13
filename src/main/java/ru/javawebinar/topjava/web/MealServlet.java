@@ -37,24 +37,22 @@ public class MealServlet extends HttpServlet {
         if (action != null) {
             switch (action.toLowerCase()) {
                 case "delete":
-                    log.debug("meal " + getId(request) + "forward to delete");
+                    log.debug("GET req : meal {} forward to delete",getId(request));
                     mealDao.delete(getId(request));
                     response.sendRedirect(request.getRequestURI());
                     return;
                 case "addmeal":
                     request.setAttribute("meal", new Meal());
-                    log.debug("forward to add meal form");
+                    log.debug("GET req : forward to add meal form");
                     request.getRequestDispatcher(ADD_OR_UPDATE).forward(request, response);
                     return;
                 case "update":
                     request.setAttribute("meal", mealDao.getById(getId(request)));
-                    log.debug("meal " + getId(request) + " forward to update meal form");
+                    log.debug("GET req : meal {} forward to update meal form",getId(request));
                     request.getRequestDispatcher(ADD_OR_UPDATE).forward(request, response);
                     return;
             }
         }
-
-        log.debug("forward to meals list show");
         forwardToMeals(request, response);
     }
 
@@ -62,7 +60,7 @@ public class MealServlet extends HttpServlet {
         List<MealTo> mealsTo = MealsUtil.filteredByStreams(mealDao.getAll(), LocalTime.MIN, LocalTime.MAX,
                 User.CALORIES_PER_DAY);
         request.setAttribute("meals", mealsTo);
-        log.debug("forward to meals" + mealsTo.size());
+        log.debug("GET req : forward to meals");
         request.getRequestDispatcher(MEALS_LIST).forward(request, response);
     }
 
@@ -75,10 +73,10 @@ public class MealServlet extends HttpServlet {
         String mealId = request.getParameter("mealId");
 
         if (mealId == null || mealId.isEmpty()) {
-            log.debug("new meal forward to add");
+            log.debug("POST req : new meal forward to add");
             mealDao.add(new Meal(dateTime, description, calories));
         } else {
-            log.debug("meal " + getId(request) + " forward to update");
+            log.debug("POST req : meal {} forward to update",getId(request));
             mealDao.update(new Meal(Long.parseLong(mealId), dateTime, description, calories));
         }
 
