@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,10 @@ public class MealService {
 
     public MealService(MealRepository repository) {
         this.repository = repository;
+    }
+
+    public List<Meal> getAll(int userId, LocalDate dateStart, LocalDate dateEnd) {
+        return new ArrayList<>(repository.getAll(userId, dateStart, dateEnd));
     }
 
     public List<Meal> getAll(int userId) {
