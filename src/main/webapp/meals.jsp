@@ -27,19 +27,19 @@
     <form method="get" action="meals">
         <input type="hidden" name="action" value="filter">
         <label> От даты (включая)
-            <input type="date" name="dateStart">
+            <input type="date" name="dateStart" value="${param.dateStart}">
         </label>
         <br>
         <label> До даты (включая)
-            <input type="date" name="dateEnd">
+            <input type="date" name="dateEnd" value="${param.dateEnd}">
         </label>
         <br>
         <label>От времени (включая)
-            <input type="time" name="timeStart">
+            <input type="time" name="timeStart" value="${param.timeStart}">
         </label>
         <br>
         <label>До времени (исключая)
-            <input type="time" name="timeEnd">
+            <input type="time" name="timeEnd" value="${param.timeEnd}">
         </label>
         <br><br>
         <button type="submit">Filter</button>

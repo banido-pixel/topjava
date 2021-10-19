@@ -12,7 +12,7 @@ public class DateTimeUtil {
         return lt.compareTo(startTime) >= 0 && lt.compareTo(endTime) < 0;
     }
 
-    public static boolean isBetweenOpen(LocalDate lt, LocalDate startTime, LocalDate endTime) {
+    public static boolean isBetweenClosed(LocalDate lt, LocalDate startTime, LocalDate endTime) {
         return lt.compareTo(startTime) >= 0 && lt.compareTo(endTime) <= 0;
     }
 

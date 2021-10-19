@@ -19,8 +19,8 @@ public class MealService {
         this.repository = repository;
     }
 
-    public List<Meal> getAll(int userId, LocalDate dateStart, LocalDate dateEnd) {
-        return new ArrayList<>(repository.getAll(userId, dateStart, dateEnd));
+    public List<Meal> getAllFiltered(int userId, LocalDate dateStart, LocalDate dateEnd) {
+        return new ArrayList<>(repository.getAllFiltered(userId, dateStart, dateEnd));
     }
 
     public List<Meal> getAll(int userId) {

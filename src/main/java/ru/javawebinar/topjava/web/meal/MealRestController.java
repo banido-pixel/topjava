@@ -25,10 +25,10 @@ public class MealRestController {
     @Autowired
     private MealService service;
 
-    public List<MealTo> getAll(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart,
-                               LocalTime timeEnd) {
+    public List<MealTo> getAllFiltered(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart,
+                                       LocalTime timeEnd) {
         log.info("getAll");
-        return MealsUtil.getFilteredTos(service.getAll(authUserId(), dateStart, dateEnd),
+        return MealsUtil.getFilteredTos(service.getAllFiltered(authUserId(), dateStart, dateEnd),
                 authUserCaloriesPerDay(),
                 timeStart == null ? LocalTime.MIN : timeStart,
                 timeEnd == null ? LocalTime.MAX : timeEnd);
@@ -61,5 +61,4 @@ public class MealRestController {
         assureIdConsistent(meal, id);
         return service.update(meal, authUserId());
     }
-
 }

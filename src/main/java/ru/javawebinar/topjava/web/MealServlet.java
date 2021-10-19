@@ -45,9 +45,6 @@ public class MealServlet extends HttpServlet {
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
 
-        String userId = request.getParameter("userId");
-        meal.setUserId(userId.isEmpty() ? null : Integer.valueOf(userId));
-
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
         if (meal.isNew()) {
             controller.create(meal);
@@ -79,7 +76,7 @@ public class MealServlet extends HttpServlet {
             case "filter":
                 log.info("getAll with filters");
                 request.setAttribute("meals",
-                        controller.getAll(
+                        controller.getAllFiltered(
                                 request.getParameter("dateStart").isEmpty()
                                         ? null : LocalDate.parse(request.getParameter("dateStart")),
                                 request.getParameter("dateEnd").isEmpty()
