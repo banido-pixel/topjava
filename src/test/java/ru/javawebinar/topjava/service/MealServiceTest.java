@@ -42,7 +42,7 @@ public class MealServiceTest {
 
     @Test
     public void get() {
-        Meal meal = service.get(ADMINMEAL2_ID, ADMIN_ID);
+        Meal meal = service.get(ADMIN_MEAL2_ID, ADMIN_ID);
         assertMatch(meal, adminMeal2);
     }
 
@@ -53,18 +53,18 @@ public class MealServiceTest {
 
     @Test
     public void notFoundUserGet() {
-        assertThrows(NotFoundException.class, () -> service.get(ADMINMEAL2_ID, UserTestData.NOT_FOUND));
+        assertThrows(NotFoundException.class, () -> service.get(ADMIN_MEAL2_ID, UserTestData.NOT_FOUND));
     }
 
     @Test
     public void otherUserGet() {
-        assertThrows(NotFoundException.class, () -> service.get(ADMINMEAL2_ID, USER_ID));
+        assertThrows(NotFoundException.class, () -> service.get(ADMIN_MEAL2_ID, USER_ID));
     }
 
     @Test
     public void delete() {
-        service.delete(USERMEAL2_ID, USER_ID);
-        assertThrows(NotFoundException.class, () -> service.get(USERMEAL2_ID, USER_ID));
+        service.delete(USER_MEAL2_ID, USER_ID);
+        assertThrows(NotFoundException.class, () -> service.get(USER_MEAL2_ID, USER_ID));
     }
 
     @Test
@@ -74,12 +74,12 @@ public class MealServiceTest {
 
     @Test
     public void notFoundUserDelete() {
-        assertThrows(NotFoundException.class, () -> service.delete(USERMEAL2_ID, UserTestData.NOT_FOUND));
+        assertThrows(NotFoundException.class, () -> service.delete(USER_MEAL2_ID, UserTestData.NOT_FOUND));
     }
 
     @Test
     public void otherUserDelete() {
-        assertThrows(NotFoundException.class, () -> service.delete(USERMEAL2_ID, ADMIN_ID));
+        assertThrows(NotFoundException.class, () -> service.delete(USER_MEAL2_ID, ADMIN_ID));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class MealServiceTest {
     public void update() {
         Meal updated = getUpdated();
         service.update(updated, USER_ID);
-        assertMatch(service.get(USERMEAL1_ID, USER_ID), getUpdated());
+        assertMatch(service.get(USER_MEAL1_ID, USER_ID), getUpdated());
     }
 
     @Test

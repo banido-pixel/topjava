@@ -10,25 +10,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 public class MealTestData {
-    public static final int USERMEAL1_ID = START_SEQ + 2;
-    public static final int USERMEAL2_ID = START_SEQ + 3;
-    public static final int USERMEAL3_ID = START_SEQ + 4;
-    public static final int USERMEAL4_ID = START_SEQ + 5;
-    public static final int ADMINMEAL1_ID = START_SEQ + 6;
-    public static final int ADMINMEAL2_ID = START_SEQ + 7;
+    public static final int USER_MEAL1_ID = START_SEQ + 2;
+    public static final int USER_MEAL2_ID = START_SEQ + 3;
+    public static final int USER_MEAL3_ID = START_SEQ + 4;
+    public static final int USER_MEAL4_ID = START_SEQ + 5;
+    public static final int ADMIN_MEAL1_ID = START_SEQ + 6;
+    public static final int ADMIN_MEAL2_ID = START_SEQ + 7;
     public static final int NOT_FOUND = 20;
 
-    public static final Meal userMeal1 = new Meal(USERMEAL1_ID,
+    public static final Meal userMeal1 = new Meal(USER_MEAL1_ID,
             LocalDateTime.of(2020, Month.OCTOBER, 30, 9, 0), "Завтрак", 600);
-    public static final Meal userMeal2 = new Meal(USERMEAL2_ID,
+    public static final Meal userMeal2 = new Meal(USER_MEAL2_ID,
             LocalDateTime.of(2020, Month.OCTOBER, 30, 14, 0), "Обед", 1200);
-    public static final Meal userMeal3 = new Meal(USERMEAL3_ID,
+    public static final Meal userMeal3 = new Meal(USER_MEAL3_ID,
             LocalDateTime.of(2020, Month.NOVEMBER, 30, 9, 0), "Завтрак", 500);
-    public static final Meal userMeal4 = new Meal(USERMEAL4_ID,
+    public static final Meal userMeal4 = new Meal(USER_MEAL4_ID,
             LocalDateTime.of(2020, Month.NOVEMBER, 30, 14, 0), "Обед", 1600);
-    public static final Meal adminMeal1 = new Meal(ADMINMEAL1_ID,
+    public static final Meal adminMeal1 = new Meal(ADMIN_MEAL1_ID,
             LocalDateTime.of(2020, Month.NOVEMBER, 30, 9, 0), "Завтрак Админ", 500);
-    public static final Meal adminMeal2 = new Meal(ADMINMEAL2_ID,
+    public static final Meal adminMeal2 = new Meal(ADMIN_MEAL2_ID,
             LocalDateTime.of(2020, Month.NOVEMBER, 30, 19, 0), "Ужин Админ", 400);
 
     public static Meal getNew() {
