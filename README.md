@@ -1,3 +1,6 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1280d757a3c1454fabf3737bd464376f)](https://www.codacy.com/gh/banido-pixel/topjava/dashboard)
+[![Build Status](https://app.travis-ci.com/banido-pixel/topjava.svg?branch=master)](https://travis-ci.com/banido-pixel/topjava)
+
 Java Enterprise Online Project
 ===============================
 
