@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Stopwatch;
@@ -36,9 +37,13 @@ public class MealServiceTest {
 
     @Rule
     public MyJUnitStopWatch stopwatch = new MyJUnitStopWatch();
-
     @Autowired
     private MealService service;
+
+    @AfterClass
+    public static void allTestsFinished() {
+        logger.debug(String.valueOf(MyJUnitStopWatch.allTestsInfo));
+    }
 
     @Test
     public void delete() {
@@ -121,12 +126,13 @@ public class MealServiceTest {
     }
 
     public static class MyJUnitStopWatch extends Stopwatch {
+        static StringBuilder allTestsInfo = new StringBuilder();
 
         private static void logInfo(Description description, long nanos) {
             String testName = description.getMethodName();
             String out = String.format("Test %s %s, spent %d microseconds%n",
                     testName, "finished", TimeUnit.NANOSECONDS.toMicros(nanos));
-            System.out.println(out);
+            allTestsInfo.append(out).append("\n");
             logger.debug(out);
         }
 
