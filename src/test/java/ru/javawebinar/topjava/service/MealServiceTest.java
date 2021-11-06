@@ -37,6 +37,7 @@ public class MealServiceTest {
 
     @Rule
     public MyJUnitStopWatch stopwatch = new MyJUnitStopWatch();
+    
     @Autowired
     private MealService service;
 
