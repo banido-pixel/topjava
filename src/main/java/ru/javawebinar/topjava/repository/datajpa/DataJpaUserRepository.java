@@ -42,7 +42,7 @@ public class DataJpaUserRepository implements UserRepository {
         return crudRepository.findAll(SORT_NAME_EMAIL);
     }
 
-    public User getWithMeals(int id){
+    public User getWithMeals(int id) {
         return crudRepository.getWithMeals(id);
     }
 }

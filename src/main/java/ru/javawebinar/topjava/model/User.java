@@ -1,13 +1,13 @@
 package ru.javawebinar.topjava.model;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
@@ -87,20 +87,12 @@ public class User extends AbstractNamedEntity {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public Date getRegistered() {
         return registered;
     }
 
     public void setRegistered(Date registered) {
         this.registered = registered;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public int getCaloriesPerDay() {
@@ -115,16 +107,24 @@ public class User extends AbstractNamedEntity {
         return enabled;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<Meal> getMeals() {

@@ -38,7 +38,7 @@ public abstract class JdbcMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
-        MapSqlParameterSource map = getMapSqlParameterSource(meal,userId);
+        MapSqlParameterSource map = getMapSqlParameterSource(meal, userId);
 
         if (meal.isNew()) {
             Number newId = insertMeal.executeAndReturnKey(map);
@@ -79,7 +79,7 @@ public abstract class JdbcMealRepository implements MealRepository {
                 ROW_MAPPER, userId, startDateTime, endDateTime);
     }
 
-    protected MapSqlParameterSource getMapSqlParameterSource(Meal meal, int userId){
+    protected MapSqlParameterSource getMapSqlParameterSource(Meal meal, int userId) {
         return new MapSqlParameterSource()
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())

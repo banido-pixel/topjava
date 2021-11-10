@@ -8,7 +8,6 @@ import ru.javawebinar.topjava.service.MealServiceTest;
 
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.*;
-import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 
 @ActiveProfiles(Profiles.DATAJPA)
 public class DataJpaMealServiceTest extends MealServiceTest {
