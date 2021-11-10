@@ -10,7 +10,7 @@ import ru.javawebinar.topjava.model.User;
 @Transactional(readOnly = true)
 public interface CrudUserRepository extends JpaRepository<User, Integer> {
 
-    @Query("SELECT u FROM User u LEFT JOIN u.meals WHERE u.id=:id")
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.meals WHERE u.id=:id")
     User getWithMeals(@Param("id") int id);
 
     @Transactional
