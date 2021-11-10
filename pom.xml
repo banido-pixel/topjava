@@ -192,9 +192,6 @@
                     <version>2.3.4</version>
                 </dependency>
             </dependencies>
-            <properties>
-                <spring.profiles.active>hsqldb</spring.profiles.active>
-            </properties>
         </profile>
 
         <profile>
@@ -221,33 +218,6 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <properties>
-                <spring.profiles.active>postgres</spring.profiles.active>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>jpa</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <spring.profiles.active>jpa</spring.profiles.active>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>datajpa</id>
-            <properties>
-                <spring.profiles.active>datajpa</spring.profiles.active>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>jdbc</id>
-            <properties>
-                <spring.profiles.active>jdbc</spring.profiles.active>
-            </properties>
         </profile>
     </profiles>
 
