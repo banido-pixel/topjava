@@ -29,12 +29,12 @@ public class DataJpaMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
-        return crudRepository.deleteByIdAndUserId(id, userId) != 0;
+        return crudRepository.delete(id, userId) != 0;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        return crudRepository.getByIdAndUserId(id, userId);
+        return crudRepository.get(id, userId);
     }
 
     @Override
@@ -44,11 +44,11 @@ public class DataJpaMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        return crudRepository.getAllByUserIdOrderByDateTimeDesc(userId);
+        return crudRepository.getAll(userId);
     }
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        return crudRepository.getAllByDateTimeGreaterThanEqualAndDateTimeLessThanAndUserIdOrderByDateTimeDesc(startDateTime, endDateTime, userId);
+        return crudRepository.getBetweenHalfOpen(startDateTime, endDateTime, userId);
     }
 }
