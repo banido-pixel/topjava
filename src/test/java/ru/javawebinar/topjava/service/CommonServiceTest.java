@@ -47,7 +47,6 @@ public abstract class CommonServiceTest {
                 "\n---------------------------------" +
                 results +
                 "\n---------------------------------");
-        results = new StringBuilder();
+        results.setLength(0);
     }
-
 }
