@@ -10,7 +10,6 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -28,9 +27,10 @@ public class JspMealController extends AbstractMealController {
         super(service);
     }
 
-    @GetMapping("/get")
-    public Meal getMeal(int id) {
-        return super.get(id);
+    @GetMapping
+    public String getMeals(Model model) {
+        model.addAttribute("meals", super.getAll());
+        return "/meals";
     }
 
     @GetMapping("/delete")
@@ -54,7 +54,7 @@ public class JspMealController extends AbstractMealController {
     }
 
     @PostMapping
-    public String save(HttpServletRequest request){
+    public String save(HttpServletRequest request) {
         Meal meal = new Meal(
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
