@@ -34,34 +34,27 @@ public class JspMealController extends AbstractMealController {
     }
 
     @GetMapping("/delete")
-    public String deleteMeal(HttpServletRequest request) {
+    public String delete(HttpServletRequest request) {
         super.delete(getId(request));
         return "redirect:/meals";
     }
 
-    @GetMapping
-    public String getMeals(Model model) {
-        model.addAttribute("meals", super.getAll());
-        return "/meals";
-    }
-
     @GetMapping("/create")
-    public String createMeal(Model model, HttpServletRequest request) {
+    public String create(Model model) {
         final Meal meal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000);
         model.addAttribute("meal", meal);
         return "mealForm";
     }
 
     @GetMapping("/update")
-    public String updateMeal(Model model, HttpServletRequest request) {
+    public String update(Model model, HttpServletRequest request) {
         final Meal meal = super.get(getId(request));
         model.addAttribute("meal", meal);
         return "mealForm";
     }
 
     @PostMapping
-    public String setMeal(HttpServletRequest request) throws IOException {
-        request.setCharacterEncoding("UTF-8");
+    public String save(HttpServletRequest request){
         Meal meal = new Meal(
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
@@ -76,7 +69,7 @@ public class JspMealController extends AbstractMealController {
     }
 
     @GetMapping("/filter")
-    public String getMealsBetween(Model model, HttpServletRequest request) {
+    public String getBetween(Model model, HttpServletRequest request) {
         LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
         LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
         LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
