@@ -1,19 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
+<head>
+    <meta charset="utf-8">
+    <base href="${pageContext.request.contextPath}/">
+</head>
+
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
 <section>
     <h2><spring:message
-            code="${fn:endsWith(requestScope['javax.servlet.forward.request_uri'],'create') ? 'meal.create' : 'meal.edit'}"/></h2>
+            code="${meal.id == null ? 'meal.create' : 'meal.edit'}"/></h2>
     <hr>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
-    <form method="post" action="${pageContext.request.contextPath}/meals">
+    <form method="post" action="meals">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt><spring:message code="meal.date"/>:</dt>
