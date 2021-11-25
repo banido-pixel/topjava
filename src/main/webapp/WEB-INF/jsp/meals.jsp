@@ -6,10 +6,6 @@
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
-<head>
-    <meta charset="utf-8">
-    <base href="${pageContext.request.contextPath}/">
-</head>
 
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>

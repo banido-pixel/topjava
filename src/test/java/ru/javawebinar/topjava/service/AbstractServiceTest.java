@@ -51,11 +51,8 @@ public abstract class AbstractServiceTest {
         });
     }
 
-//    public void checkJdbcWithAssume(){
-//        Assume.assumeFalse(Arrays.stream(env.getActiveProfiles()).anyMatch(profile -> profile.equalsIgnoreCase(Profiles.JDBC)));
-//    }
-
-    public boolean checkJdbc(){
-        return Arrays.stream(env.getActiveProfiles()).anyMatch(profile -> profile.equalsIgnoreCase(Profiles.JDBC));
+    public void checkJdbc(){
+        Assume.assumeFalse(Arrays.stream(env.getActiveProfiles()).anyMatch(profile -> profile.equalsIgnoreCase(Profiles.JDBC)));
     }
+
 }
