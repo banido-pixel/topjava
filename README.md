@@ -73,7 +73,7 @@ Maven/ Spring/ Security/ JPA(Hibernate)/ REST(Jackson)/ Bootstrap(CSS)/ jQuery +
 - Разбор домашнего задания HW5 + Optional
 - Кэш Hibernate
 - Spring Web
-- JPS, JSTL, internationalization
+- JSP, JSTL, internationalization
 - Динамическое изменение профиля при запуске
 - Конфигурирование Tomcat через maven plugin. Jndi-lookup
 - Spring Web MVC
