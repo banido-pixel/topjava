@@ -18,8 +18,10 @@ public class MealTestData {
     public static final int MEAL1_ID = START_SEQ + 2;
     public static final int ADMIN_MEAL_ID = START_SEQ + 9;
 
-    public static final String startDateTime = "2020-01-30T12:15:30";
-    public static final String endDateTime = "2020-01-31T19:15:30";
+    public static final String startDate = "2020-01-30";
+    public static final String endDate = "2020-01-31";
+    public static final String startTime = "12:15";
+    public static final String endTime = "19:15";
 
     public static final Meal meal1 = new Meal(MEAL1_ID, of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
     public static final Meal meal2 = new Meal(MEAL1_ID + 1, of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000);
@@ -34,6 +36,12 @@ public class MealTestData {
     public static final List<Meal> meals = List.of(meal7, meal6, meal5, meal4, meal3, meal2, meal1);
     public static final List<MealTo> filteredMeals = List.of(new MealTo(meal6.id(),meal6.getDateTime(),meal6.getDescription(),
             meal6.getCalories(),true), new MealTo(meal2.id(),meal2.getDateTime(),meal2.getDescription(),
+            meal2.getCalories(),false));
+
+    public static final List<MealTo> filteredMeals2 = List.of(new MealTo(meal7.id(),meal7.getDateTime(),
+            meal7.getDescription(),meal7.getCalories(),true),new MealTo(meal6.id(),meal6.getDateTime(),meal6.getDescription(),
+            meal6.getCalories(),true), new MealTo(meal3.id(),meal3.getDateTime(),meal3.getDescription(),
+            meal3.getCalories(),false), new MealTo(meal2.id(),meal2.getDateTime(),meal2.getDescription(),
             meal2.getCalories(),false));
 
     public static Meal getNew() {
