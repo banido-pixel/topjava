@@ -15,6 +15,7 @@ import ru.javawebinar.topjava.web.json.JsonUtil;
 
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,8 +42,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
             User obtainedUser = USER_MATCHER.readFromJson(action);
             MEAL_MATCHER.assertMatch(obtainedUser.getMeals(), MealTestData.meals);
         } else {
-            org.assertj.core.api.Assertions.assertThatThrownBy(
-                            () -> perform(MockMvcRequestBuilders.get(REST_URL + "/with-meals")))
+            assertThatThrownBy(() -> perform(MockMvcRequestBuilders.get(REST_URL + "/with-meals")))
                     .hasCause(new UnsupportedOperationException());
         }
     }
