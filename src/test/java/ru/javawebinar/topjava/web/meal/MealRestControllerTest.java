@@ -26,7 +26,7 @@ class MealRestControllerTest extends AbstractControllerTest {
     private static final String REST_URL = MealRestController.REST_URL + "/";
 
     @Autowired
-    MealService mealService;
+    private MealService mealService;
 
     @Test
     void delete() throws Exception {
@@ -44,7 +44,7 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        MEAL_MATCHER.assertMatch(mealService.get(MEAL1_ID,USER_ID),updated);
+        MEAL_MATCHER.assertMatch(mealService.get(MEAL1_ID, USER_ID), updated);
     }
 
     @Test
@@ -59,7 +59,7 @@ class MealRestControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newMeal.setId(newId);
         MEAL_MATCHER.assertMatch(created, newMeal);
-        MEAL_MATCHER.assertMatch(mealService.get(newId,USER_ID), newMeal);
+        MEAL_MATCHER.assertMatch(mealService.get(newId, USER_ID), newMeal);
     }
 
     @Test
@@ -77,13 +77,16 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MEAL_TO_MATCHER.contentJson(MealsUtil.getTos(meals,user.getCaloriesPerDay())));
+                .andExpect(MEAL_TO_MATCHER.contentJson(MealsUtil.getTos(meals, user.getCaloriesPerDay())));
     }
 
     @Test
     void getBetween() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "filter?startDate=" + startDate +
-                 "&startTime=" + startTime + "&endDate=" + endDate + "&endTime=" + endTime))
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter")
+                .param("startDate", startDate)
+                .param("startTime", startTime)
+                .param("endDate", endDate)
+                .param("endTime", endTime))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -92,8 +95,9 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetweenWithNull() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "filter?startDate=" + startDate +
-                "&startTime=" + startTime))
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter")
+                .param("startDate", startDate)
+                .param("startTime", startTime))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
