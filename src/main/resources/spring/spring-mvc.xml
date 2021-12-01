@@ -27,8 +27,8 @@
           class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="formatters">
             <set>
-                <bean class="ru.javawebinar.topjava.util.format.LocalTimeFormatterFactory"/>
-                <bean class="ru.javawebinar.topjava.util.format.LocalDateFormatterFactory"/>
+                <bean class="ru.javawebinar.topjava.util.format.LocalTimeFormatter"/>
+                <bean class="ru.javawebinar.topjava.util.format.LocalDateFormatter"/>
             </set>
         </property>
     </bean>
