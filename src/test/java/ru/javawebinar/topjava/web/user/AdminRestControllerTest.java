@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.web.user;
 
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -7,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javawebinar.topjava.MealTestData;
-import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
@@ -15,9 +15,6 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
-import java.util.Arrays;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -37,7 +34,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getWithMeals() throws Exception {
-        if (Arrays.stream(env.getActiveProfiles()).anyMatch(profile -> profile.equalsIgnoreCase(Profiles.DATAJPA))) {
+        if (isDatajpa()) {
             ResultActions action = perform(MockMvcRequestBuilders.get(REST_URL + ADMIN_ID + "/with-meals"))
                     .andExpect(status().isOk())
                     .andDo(print())
@@ -47,8 +44,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
             User obtainedUser = USER_MATCHER.readFromJson(action);
             MEAL_MATCHER.assertMatch(obtainedUser.getMeals(), MealTestData.adminMeal2, MealTestData.adminMeal1);
         } else {
-            assertThatThrownBy(() -> perform(MockMvcRequestBuilders.get(REST_URL + ADMIN_ID + "/with-meals")))
-                    .hasCause(new UnsupportedOperationException());
+            Assumptions.assumeTrue(true, "Not supported operation");
         }
     }
 

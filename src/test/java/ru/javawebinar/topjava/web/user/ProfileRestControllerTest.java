@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.web.user;
 
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -7,15 +8,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javawebinar.topjava.MealTestData;
-import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
-import java.util.Arrays;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,7 +30,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getWithMeals() throws Exception {
-        if (Arrays.stream(env.getActiveProfiles()).anyMatch(profile -> profile.equalsIgnoreCase(Profiles.DATAJPA))) {
+        if (isDatajpa()) {
             ResultActions action = perform(MockMvcRequestBuilders.get(REST_URL + "/with-meals"))
                     .andExpect(status().isOk())
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -42,8 +39,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
             User obtainedUser = USER_MATCHER.readFromJson(action);
             MEAL_MATCHER.assertMatch(obtainedUser.getMeals(), MealTestData.meals);
         } else {
-            assertThatThrownBy(() -> perform(MockMvcRequestBuilders.get(REST_URL + "/with-meals")))
-                    .hasCause(new UnsupportedOperationException());
+            Assumptions.assumeTrue(true, "Not supported operation");
         }
     }
 
