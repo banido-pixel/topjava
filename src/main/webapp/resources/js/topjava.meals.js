@@ -4,6 +4,22 @@ const ctx = {
     ajaxUrl: mealAjaxUrl
 };
 
+function clearFilters() {
+    $('#filter input').val("");
+    updateTable();
+}
+
+function filter() {
+    $.ajax({
+        url: ctx.ajaxUrl + "filter",
+        data:$('#filter input').serialize(),
+        type: "GET"
+    }).done( function (data) {
+        ctx.datatableApi.clear().rows.add(data).draw();
+        successNoty("Filtered");
+    })
+}
+
 $(function () {
     makeEditable(
         $("#datatable").DataTable({
