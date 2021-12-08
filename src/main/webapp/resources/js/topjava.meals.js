@@ -1,4 +1,4 @@
-const mealAjaxUrl = "mealUI/meals/";
+const mealAjaxUrl = "ui/meals/";
 
 const ctx = {
     ajaxUrl: mealAjaxUrl
