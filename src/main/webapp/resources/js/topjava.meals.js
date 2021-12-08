@@ -15,7 +15,7 @@ function filter() {
         data:$('#filter input').serialize(),
         type: "GET"
     }).done( function (data) {
-        ctx.datatableApi.clear().rows.add(data).draw();
+        fillTable(data);
         successNoty("Filtered");
     })
 }
@@ -47,7 +47,7 @@ $(function () {
             "order": [
                 [
                     0,
-                    "asc"
+                    "desc"
                 ]
             ]
         })
