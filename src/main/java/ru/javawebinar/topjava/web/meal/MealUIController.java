@@ -41,7 +41,7 @@ public class MealUIController extends AbstractMealController {
     @PostMapping
     public ResponseEntity<String> createOrUpdate(@Valid Meal meal, BindingResult result) {
         if (result.hasErrors()) {
-            return ValidationUtil.getErrorMsg(result);
+            return ValidationUtil.getErrorResponse(result);
         }
         if (meal.isNew()) {
             super.create(meal);
